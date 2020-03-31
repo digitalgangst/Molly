@@ -1,20 +1,20 @@
 import os
 import re
-import telebot
-
-
-from dotenv import load_dotenv
 from commands.reply.sedCommand import SedCommand
 
+import telebot
+
 from core.command import AuthCommand
+from core.credentials import getToken
+from core.repository import Repository
 
-load_dotenv()
-
-botToken = os.getenv('BOTTOKEN')
+botToken = getToken()
 
 bot = telebot.TeleBot(botToken)
 
 replyCommands = [SedCommand]
+
+print(Repository.findAllAdmins())
 
 
 @bot.message_handler(commands=['isalive'])
@@ -24,7 +24,7 @@ def send_welcome(message):
 # Regex Replace
 @bot.message_handler(func=lambda message: message.reply_to_message)
 def replace_regex_msg(message):
-    c = AuthCommand()
+    c = AuthCommand(Repository)
     for command in replyCommands:
         cmd = command()
         cmd.load(bot)
