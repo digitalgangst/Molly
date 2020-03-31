@@ -1,6 +1,7 @@
 import re
 import json
 
+from core.repository import Repository
 
 class Command:
     def __init__(self):
@@ -15,13 +16,10 @@ class Command:
 
 
 class AuthCommand:
-    def __init__(self):
+    def __init__(self, repository = Repository):
         super().__init__()
-        self.authorizedIds = []
+        self.authorizedIds = repository.findAllAdmins()
         self.bot = None
-        with open("./data/permissions.json") as file:
-            data = json.load(file)
-            self.authorizedIds = data.get("adminUsers")
 
     def load(self, bot):
         self.bot = bot
