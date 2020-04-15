@@ -14,7 +14,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "dependencies": "0.0.1",
     "dotenv": "^8.2.0",
-    "node-telegram-bot-api": "^0.40.0"
+    "glob": "^7.1.6",
+    "node-telegram-bot-api": "^0.40.0",
+    "ytdl-core": "^2.0.1"
   }
 }
