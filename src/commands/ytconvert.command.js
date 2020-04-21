@@ -5,6 +5,7 @@ module.exports = (bot) => ({
     pattern: /\/ytconvert (.+)/,
     command: async (msg, match) => {
       const [, ytlink] = match;
+      const {message_id} = msg;
       const { id } = msg.chat;
 
       const songInfo = await  ytdl.getInfo(ytlink, {downloadURL: true});
@@ -17,12 +18,16 @@ module.exports = (bot) => ({
         filename: `${title}.mp3`,
         // Explicitly specify the MIME type.
         contentType: 'audio/mpeg',
+        
       };
-     
+      const replyMsgOption = {
+        reply_to_message_id: message_id,
+        parse_mode: "Markdown",
+      };
       stream.pipe(filestream);
-      bot.sendMessage(id, `Video: ${title}\nDownloading...`);
+      bot.sendMessage(id, `\`${title}\` foi adicionado a lista de downloads...\n`, replyMsgOption);
       stream.on('end', () => {
-            bot.sendAudio(id, filename, {}, fileOptions);
+            bot.sendAudio(id, filename, replyMsgOption, fileOptions);
             fs.unlinkSync(filename);
       });
 
